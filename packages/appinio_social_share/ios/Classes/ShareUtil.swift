@@ -256,8 +256,19 @@ public class ShareUtil{
                 data.append(URL(fileURLWithPath: filePath))
             }
         }
+        let currentViewController = UIApplication.topViewController()
         let activityViewController = UIActivityViewController(activityItems: data, applicationActivities: nil)
-        UIApplication.topViewController()?.present(activityViewController, animated: true, completion: nil)
+        
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let viewFrame = currentViewController?.view.frame
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: viewFrame?.maxX ?? 0, y: viewFrame?.maxY ?? 0, width: 0, height: 0)
+            activityViewController.popoverPresentationController?.sourceView = currentViewController?.view
+            activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.init(rawValue: 0)
+            activityViewController.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+        }
+        
+        currentViewController?.present(activityViewController, animated: true, completion: nil)
         result(SUCCESS)
     }
     
