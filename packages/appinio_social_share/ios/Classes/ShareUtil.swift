@@ -265,7 +265,9 @@ public class ShareUtil{
             activityViewController.popoverPresentationController?.sourceRect = CGRect(x: viewFrame?.maxX ?? 0, y: viewFrame?.maxY ?? 0, width: 0, height: 0)
             activityViewController.popoverPresentationController?.sourceView = currentViewController?.view
             activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.init(rawValue: 0)
-            activityViewController.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+            activityViewController.completionWithItemsHandler = { [weak currentViewController] _, _, _, _ in
+                currentViewController?.dismiss(animated: false)
+            }
         }
         
         currentViewController?.present(activityViewController, animated: true, completion: nil)
